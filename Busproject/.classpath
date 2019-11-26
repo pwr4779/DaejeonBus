@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con"
+		path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8" />
+	<classpathentry kind="src" path="src" />
+	<classpathentry kind="lib"
+		path="C:/Users/plas_/Desktop/bus/Busproject/GMapsFX-2.12.0.jar" />
+	<classpathentry kind="lib"
+		path="C:/Users/plas_/Desktop/bus/Busproject/logback-classic-1.2.1.jar" />
+	<classpathentry kind="lib"
+		path="C:/Users/plas_/Desktop/bus/Busproject/logback-core-1.2.1.jar" />
+	<classpathentry kind="lib"
+		path="C:/Users/plas_/Desktop/bus/Busproject/slf4j-api-1.7.23.jar" />
+	<classpathentry kind="lib"
+		path="C:/Users/plas_/Desktop/bus/Busproject/gson-2.8.6.jar" />
+	<classpathentry kind="output" path="bin" />
+</classpath>

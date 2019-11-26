@@ -1,0 +1,43 @@
+#ParentPane {
+   -fx-background-color: #202B3D;
+}
+#Menupane{
+	-fx-background-color: #20264D;
+}
+
+#HomeButton{
+	-fx-background-color: #20264D;
+}
+
+#RouteButton{
+	-fx-background-color: #20264D;
+}
+
+#SurroundStationButton{
+	-fx-background-color: #20264D;
+}
+
+
+#BusStationButton{
+	-fx-background-color: #20264D;
+}
+
+#menulabel{
+	-fx-background-color:#343E7E;
+	-fx-background-radius: 5;
+}
+
+#errormsg{
+	-fx-background-color: #202B3D;
+	-fx-font-weight: bold;
+    -fx-text-fill: #000000;
+	
+}
+
+
+#NearestBusStationbutton { 
+    -fx-background-image: url('myimage.svg');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 90%;
+}
