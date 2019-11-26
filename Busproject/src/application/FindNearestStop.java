@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
+import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.DirectionsPane;
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
 import com.lynden.gmapsfx.javascript.object.LatLong;
@@ -31,13 +33,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class FindNearestStop implements Initializable, MapComponentInitializedListener, DirectionsServiceCallback {
-	protected DirectionsService directionsService;
-    protected DirectionsPane directionsPane;
-
+public class FindNearestStop implements Initializable, MapComponentInitializedListener {
 	
-    protected StringProperty from = new SimpleStringProperty();
-    protected StringProperty to = new SimpleStringProperty();
 	@FXML
 	private TextField RoutetxtField;
 	
@@ -70,17 +67,9 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 	
 	@FXML 
 	GoogleMapView mapView;  
-
-    @FXML
-    protected TextField fromTextField;
-
-    @FXML
-    protected TextField toTextField;
 	
     @FXML
     private void toTextFieldAction(ActionEvent event) {
-        DirectionsRequest request = new DirectionsRequest(from.get(), to.get(), TravelModes.DRIVING);
-        directionsService.getRoute(request, this, new DirectionsRenderer(true, mapView.getMap(), directionsPane));
     }
     
 	private void handleBtnHome(ActionEvent event) {
@@ -88,7 +77,7 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 		    Parent Home = FXMLLoader.load(getClass().getResource("HomeGUI.fxml"));
 		    Scene scene = new Scene(Home);
 		    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		    Stage primaryStage = (Stage)HomeButton.getScene().getWindow(); // 현재 윈도우 가져오기
+		    Stage primaryStage = (Stage)HomeButton.getScene().getWindow();
 		    primaryStage.setScene(scene);	    
 		 } catch(Exception e){
 
@@ -97,36 +86,34 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 		}
 	}
 	
+	
+	
 
     public void initialize(URL url, ResourceBundle rb) {
     	HomeButton.setOnAction(e->handleBtnHome(e));
-		
         mapView.addMapInializedListener(this);
-        to.bindBidirectional(toTextField.textProperty());
-        from.bindBidirectional(fromTextField.textProperty());
     }
 	
 	
 	@Override
     public void mapInitialized() {
         MapOptions options = new MapOptions();
-
         options.center(new LatLong(36.35111, 127.38500))
                 .zoomControl(true)
                 .zoom(12)
                 .overviewMapControl(false)
                 .mapType(MapTypeIdEnum.ROADMAP);
         GoogleMap map = mapView.createMap(options);
-        directionsService = new DirectionsService();
-        directionsPane = mapView.getDirec();
+        
+        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
+ 		   LatLong latLong = event.getLatLong();
+ 		   System.out.println("Latitude: " + latLong.getLatitude());
+ 		   System.out.println("Longitude: " + latLong.getLongitude());
+        });
     }
 
-
-	@Override
-	public void directionsReceived(DirectionsResult arg0, DirectionStatus arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
+	
+	
 	
 }
