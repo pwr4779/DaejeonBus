@@ -1,6 +1,9 @@
 package application;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.lynden.gmapsfx.GoogleMapView;
@@ -9,9 +12,13 @@ import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.DirectionsPane;
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.InfoWindow;
+import com.lynden.gmapsfx.javascript.object.InfoWindowOptions;
 import com.lynden.gmapsfx.javascript.object.LatLong;
 import com.lynden.gmapsfx.javascript.object.MapOptions;
 import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
+import com.lynden.gmapsfx.javascript.object.Marker;
+import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import com.lynden.gmapsfx.service.directions.DirectionStatus;
 import com.lynden.gmapsfx.service.directions.DirectionsRenderer;
 import com.lynden.gmapsfx.service.directions.DirectionsRequest;
@@ -34,7 +41,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class FindNearestStop implements Initializable, MapComponentInitializedListener {
-	
+	BusStationTable mBusStationTable = BusStationTable.getInstance();
+    Map<String, BusStation> busStationTable = mBusStationTable.getBusStationTable();
+    List<BusStation> surroundList = new ArrayList<>();
 	@FXML
 	private TextField RoutetxtField;
 	
@@ -66,7 +75,9 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 	private Button downtypeBtn;
 	
 	@FXML 
-	GoogleMapView mapView;  
+	GoogleMapView mapView; 
+	
+	 GoogleMap map;
 	
     @FXML
     private void toTextFieldAction(ActionEvent event) {
@@ -90,6 +101,7 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 	
 
     public void initialize(URL url, ResourceBundle rb) {
+    	
     	HomeButton.setOnAction(e->handleBtnHome(e));
         mapView.addMapInializedListener(this);
     }
@@ -103,17 +115,93 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
                 .zoom(12)
                 .overviewMapControl(false)
                 .mapType(MapTypeIdEnum.ROADMAP);
-        GoogleMap map = mapView.createMap(options);
+        map = mapView.createMap(options);
         
         map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
  		   LatLong latLong = event.getLatLong();
  		   System.out.println("Latitude: " + latLong.getLatitude());
  		   System.out.println("Longitude: " + latLong.getLongitude());
+ 			double latitude =  latLong.getLatitude();
+ 			double longtitude = latLong.getLongitude();
+ 			findNearestStation(latitude,longtitude);
+ 			
+ 			options.center(new LatLong(latitude, longtitude)).mapType(MapTypeIdEnum.ROADMAP).overviewMapControl(false)
+ 					.panControl(false).rotateControl(false).scaleControl(false).streetViewControl(false).zoomControl(false)
+ 					.zoom(12);
+ 			map = mapView.createMap(options);
+ 			stationMarking(latitude,longtitude);
         });
+        
+        
     }
+	
+	private List<BusStation> findNearestStation(double mlat, double mlong){
+		
+		BusStation BusStationvalue = null;
+		for (String key : busStationTable.keySet()) {
+			BusStationvalue = busStationTable.get(key);
+			System.out.println(BusStationvalue.getStationName());
+			double latitude = Double.parseDouble(BusStationvalue.getLatitude());
+			double longtitude = Double.parseDouble(BusStationvalue.getLongitude());
+			
+			if(getDistance(latitude,longtitude,mlat,mlong)<300) {
+				surroundList.add(BusStationvalue);
+			}
+		}
+		return surroundList;
+	}
+	
+	private void stationMarking(double mlat, double mlong) {
+		System.out.println("making start");
+		LatLong Location = new LatLong(mlat, mlong);
+		MarkerOptions markerOptions = new MarkerOptions();
+		markerOptions.position(Location);
+		Marker Marker = new Marker(markerOptions);
+		map.addMarker(Marker);
+		InfoWindowOptions infoWindowOptions = new InfoWindowOptions();
+		String info ="현재위치";
+		infoWindowOptions.content(info);
+		InfoWindow InfoWindow = new InfoWindow(infoWindowOptions);
+		InfoWindow.open(map, Marker);
+		
+	
+		for(BusStation stationelement:surroundList){
+			System.out.println(stationelement.getStationName());
+			double latitude = Double.parseDouble(stationelement.getLatitude());
+			double longtitude = Double.parseDouble(stationelement.getLongitude());
+				LatLong NearestStationLocation = new LatLong(latitude, longtitude);
+				markerOptions = new MarkerOptions();
+				markerOptions.position(NearestStationLocation);
+				Marker = new Marker(markerOptions);
+				map.addMarker(Marker);
+				infoWindowOptions = new InfoWindowOptions();
+				info =stationelement.getStationName() +"("+ stationelement.getBUS_NODE_ID()+")";
+				infoWindowOptions.content(info);
+				InfoWindow = new InfoWindow(infoWindowOptions);
+				InfoWindow.open(map, Marker);
+		
+		}
+	}
+	
+	public double getDistance(double lat1, double lon1, double lat2, double lon2) {
+		double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+         
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = Math.abs(dist * 60 * 1.1515*1609.344);
 
+        return dist;
+	}
 	
-	
-	
+	 // This function converts decimal degrees to radians
+    private static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+     
+    // This function converts radians to decimal degrees
+    private static double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
+    }
 	
 }

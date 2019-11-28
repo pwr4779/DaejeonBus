@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 public class RealtimeRouteLocation implements Initializable  {
 	private String uRouteName;
 	private String uRouteID;
-	private String ud_type = "0";// ���� 0, ���� 1
+	private String ud_type = "0";
 	RouteTable mRouteTable = RouteTable.getInstance();
 	BusStationTable mBusStationTable = BusStationTable.getInstance();
 	Map<String, Route> routeTable = mRouteTable.getRouteTable();
@@ -138,11 +138,11 @@ public class RealtimeRouteLocation implements Initializable  {
 		for (String key : routeTable.keySet()) {
 			Route routevalue = routeTable.get(key);
 			// System.out.println(routevalue.RouteID);
-			String RouteID = routevalue.getRouteID(); // �뼱ID
-			String RouteName = routevalue.getRouteName(); // �뼱��Ī
-			String RouteType = routevalue.getRouteType();// �뼱Ÿ�� 1: ����, 2:����, 3:����, 4:�ܰ�, 5:����, 6:÷��
-			String Startstop = routevalue.getStartstop();// �뼱����
-			String Turnstop = routevalue.getTurnstop();// �뼱��ȯ����
+			String RouteID = routevalue.getRouteID();
+			String RouteName = routevalue.getRouteName();
+			String RouteType = routevalue.getRouteType();
+			String Startstop = routevalue.getStartstop();
+			String Turnstop = routevalue.getTurnstop();
 			String StartStopName = ((BusStation)busStationTable.get(Startstop)).getStationName();
 			String LastStopName = ((BusStation)busStationTable.get(Turnstop)).getStationName();
 			String item;
@@ -209,13 +209,10 @@ public class RealtimeRouteLocation implements Initializable  {
 		}
 		
 		for(String stationelement:searchdirectionList) {
-			//System.out.println("ã�� ������"+stationelement);
 			BusStation BusStationvalue = null;
 			for (String key : busStationTable.keySet()) {
 				BusStationvalue = busStationTable.get(key);
-				//System.out.println("Ž��"+BusStationvalue.getStationName());
 				if ((BusStationvalue.getBUS_NODE_ID()).equals(stationelement.trim())) {
-					//System.out.println("ã��"+BusStationvalue.getStationName());
 					break;
 				}
 			}

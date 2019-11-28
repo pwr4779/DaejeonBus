@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
-	private String RouteID; //노선ID
-	private String RouteName; // 노선명칭
-	private String RouteType;//노선타입 1: 급행, 2:간선, 3:지선, 4:외곽, 5:마을, 6:첨단
-	private String Startstop;//노선기점
-	private String Laststop;//노선정점
-	private String turnstop;// 반환정점
+	private String RouteID; 
+	private String RouteName; 
+	private String RouteType;
+	private String Startstop;
+	private String Laststop;
+	private String turnstop;
 
-	private List<String> BusstationList = new ArrayList<String>();// 노선의 전체경유정류장ID 리스트
+	private List<String> BusstationList = new ArrayList<String>();
 	private List<String> forwardBusstationList = new ArrayList<String>();
 	private List<String> reverseBusstationList = new ArrayList<String>();
 

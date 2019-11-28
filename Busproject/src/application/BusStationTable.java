@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BusStationTable {
-	private static Map<String, BusStation> stationTable = new HashMap<>();
+	private static Map<String, BusStation> stationTable = new HashMap<String, BusStation>(3000);
 	
 	private BusStationTable() {}
 	

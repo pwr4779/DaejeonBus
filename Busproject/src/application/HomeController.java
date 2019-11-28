@@ -36,10 +36,9 @@ public class HomeController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		if(Startflag) {
-			mApiParsing.RouteParsing();
+			mApiParsing.initData();
 			Startflag = false;
 		}
-		/*다음 화면 이동 : 화면전환*/
 		RouteButton.setOnAction(e->handleBtnRouteSearch(e));
 		BusStationButton.setOnAction(e->handleBtnBusSearch(e));
 		SurroundStationButton.setOnAction(e->handleBtnSurroundSearch(e));
@@ -55,7 +54,7 @@ public class HomeController implements Initializable {
 
 		    Scene scene = new Scene(RouteSearch);
 		    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		    Stage primaryStage = (Stage)RouteButton.getScene().getWindow(); // Route 윈도우 가져오기
+		    Stage primaryStage = (Stage)RouteButton.getScene().getWindow(); 
 		    primaryStage.setScene(scene);
 		    
 		 } catch(Exception e){
@@ -71,7 +70,7 @@ public class HomeController implements Initializable {
 
 		    Scene scene = new Scene(RouteSearch);
 		    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		    Stage primaryStage = (Stage)BusStationButton.getScene().getWindow(); // BusStation 윈도우 가져오기
+		    Stage primaryStage = (Stage)BusStationButton.getScene().getWindow(); 
 		    primaryStage.setScene(scene);
 		    
 		 } catch(Exception e){
@@ -87,7 +86,7 @@ public class HomeController implements Initializable {
 
 		    Scene scene = new Scene(RouteSearch);
 		    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		    Stage primaryStage = (Stage)RouteButton.getScene().getWindow(); // Route 윈도우 가져오기
+		    Stage primaryStage = (Stage)RouteButton.getScene().getWindow(); 
 		    primaryStage.setScene(scene);
 		    
 		 } catch(Exception e){

@@ -34,7 +34,7 @@ public class ApiParsing {
 	Map<String, BusStation> busStationTable = mBusStationTable.getBusStationTable();
 	
 	private static class _Holder {
-		// instance ���� 1ȸ �Ҵ�.
+	
 		private static final ApiParsing instance = new ApiParsing();
 	}
 
@@ -42,7 +42,7 @@ public class ApiParsing {
 		return _Holder.instance;
 	}
 
-	public void RouteParsing() {
+	public void initData() {
 		try {
             BufferedReader br = new BufferedReader(new FileReader("RouteData.txt"));
             String line;
@@ -68,10 +68,13 @@ public class ApiParsing {
 				String BUSSTOP_NM = splitdata[1];
 				String GPS_LATI = splitdata[2];
 				String GPS_LONG = splitdata[3];
+				//System.out.println(BUSSTOP_NM);
 				busStationTable.put(BUS_NODE_ID, new BusStation(BUS_NODE_ID, BUSSTOP_NM, GPS_LATI, GPS_LONG));
 			}
 			System.out.println("busStationTable setting");
 			br.close();
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		
