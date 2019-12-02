@@ -21,9 +21,9 @@ public class BusApplication extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("HomeGUI.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("..\\UI/HomeGUI.fxml"));
 			Scene scene = new Scene(root,1100,538);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("..\\UI/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
