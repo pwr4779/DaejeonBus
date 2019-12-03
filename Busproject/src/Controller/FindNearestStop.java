@@ -84,10 +84,6 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 	
 	 GoogleMap map;
 	
-    @FXML
-    private void toTextFieldAction(ActionEvent event) {
-    }
-    
 	private void handleBtnHome(ActionEvent event) {
 		try{
 		    Parent Home = FXMLLoader.load(getClass().getResource("..\\UI/HomeGUI.fxml"));

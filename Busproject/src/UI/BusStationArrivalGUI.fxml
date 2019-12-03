@@ -25,13 +25,8 @@
 				<Button fx:id="BusStationsearchBtn" layoutX="460.0" layoutY="50.0" mnemonicParsing="false" text="검색" />
 				<Label layoutX="14.0" layoutY="24.0" prefHeight="18.962890625" prefWidth="159.9998779296875" text="BusStation" textFill="WHITE" />
             <ListView fx:id="searchlist" layoutX="511.0" layoutY="363.0" prefHeight="167.0" prefWidth="431.0" onMouseClicked="#handleMouseClick"/>
-            <TableView fx:id="ExtimeTable" layoutX="511.0" layoutY="100.0" prefHeight="255.0" prefWidth="431.0">
-              <columns>
-                <TableColumn fx:id="RouteNameColumn" prefWidth="88.0" text="노선" />
-                <TableColumn fx:id="locationColumn" prefWidth="280.0" text="현재위치" />
-                <TableColumn fx:id="ExtimeColumn" prefWidth="60.0" text="분" />
-              </columns>
-            </TableView>
+            <ListView fx:id="ExtimeTable" layoutX="511.0" layoutY="100.0" prefHeight="255.0" prefWidth="431.0">
+            </ListView>
 			</children>
 		</Pane>
 		<AnchorPane id="Menupane" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="198.0">

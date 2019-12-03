@@ -2,6 +2,7 @@ package Controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 
 import ApiParsing.ApiParsing;
+import BusStation.AlarmSet;
 import BusStation.BusStation;
 import BusStation.BusStationTable;
 import BusStation.ExtimeInfo;
@@ -80,16 +82,7 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 	private Button downtypeBtn;
 	
 	@FXML
-	private TableView<ExtimeInfo> ExtimeTable;
-	
-	@FXML
-	private TableColumn<ExtimeInfo, String> RouteNameColumn;
-	
-	@FXML
-	private TableColumn<ExtimeInfo, Image> locationColumn;
-	
-	@FXML
-	private TableColumn<ExtimeInfo, String> ExtimeColumn;
+	private ListView<String> ExtimeTable;
 	
 	
 	@FXML 
@@ -103,17 +96,37 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 	public void handleMouseClick(MouseEvent event) {
 		  String selectlist = searchlist.getSelectionModel().getSelectedItem();
 		  System.out.println("clicked on " + selectlist);
-		  String[] select = selectlist.split("(,)");
+		  String[] select = selectlist.split("[\\[\\]]");
+		  System.out.println(select[1]);
 		  BusStationArrivalPrint(select[1]);
+		 
 	}
 	
 	private void BusStationArrivalPrint(String BusStationID) {
-		ObservableList<ExtimeInfo> ExtimeInfoTable = FXCollections.observableArrayList();
-		
+		ExtimeTable.setItems(FXCollections.observableArrayList());;
 		ExtimeList=mApiParsing.extimeInfoParsing(BusStationID);
 		Iterator<ExtimeInfo> Iterator = ExtimeList.iterator();
+		String result;
 		while (Iterator.hasNext()) {
-			ExtimeInfoTable.add(Iterator.next());
+			ExtimeInfo element = (ExtimeInfo)Iterator.next();
+			switch (element.getROUTE_TP()) {
+			case "1":
+				result = String.format("%-10s%-20s%-5s%4s","급행"+element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
+				ExtimeTable.getItems().add(result);
+				break;
+			case "5":
+				result = String.format("%-10s%-20s%-5s%4s","마을"+element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
+				ExtimeTable.getItems().add(result);
+				break;
+			case "6":
+				result = String.format("%-10s%-20s%-5s%4s","첨단"+element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
+				ExtimeTable.getItems().add(result);
+				break;
+			default:
+				result = String.format("%-10s%-20s%-5s%4s",element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
+				ExtimeTable.getItems().add(result);
+				break;
+			}
 		}
 	}
 	
@@ -149,7 +162,7 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 			Marker Marker = new Marker(markerOptions);
 			map.addMarker(Marker);
 			InfoWindowOptions infoWindowOptions = new InfoWindowOptions();
-			String info =Station.getStationName() +"("+ Station.getBUS_NODE_ID()+")"; //+"Location("+latitude+","+longtitude+")"
+			String info =Station.getStationName() +"["+ Station.getBUS_NODE_ID()+"]"; //+"Location("+latitude+","+longtitude+")"
 			infoWindowOptions.content(info);
 			InfoWindow InfoWindow = new InfoWindow(infoWindowOptions);
 			InfoWindow.open(map, Marker);
@@ -164,7 +177,7 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 			String element = BusStationvalue.getStationName();
 			if (element.indexOf(uStationName) > -1) {
 				Stationlist.add(BusStationvalue);
-				String result = BusStationvalue.getStationName() + "(" + BusStationvalue.getBUS_NODE_ID() + ")";
+				String result = BusStationvalue.getStationName() + "[" + BusStationvalue.getBUS_NODE_ID() + "]";
 				searchlist.getItems().add(result);
 			}
 		}
@@ -236,6 +249,12 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 
 		}
 	}
+
+	public void requestTimeInfoUseAPI(Date date, String stationID, String routeID) {
+		// TODO Auto-generated method stub
+		AlarmSet alarm = new AlarmSet(date, stationID, routeID);
+	}
+
 
 
 

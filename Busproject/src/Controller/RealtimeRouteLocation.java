@@ -179,11 +179,10 @@ public class RealtimeRouteLocation implements Initializable  {
 			routevalue = routeTable.get(key);
 			if (routevalue.getRouteName().equals(Name)) {
 				System.out.println("찾음");
-				break;
-				
-			}
-			
+				break;	
+			}	
 		}
+		
 		if(routevalue == null) {
 			errormsg.setText("찾는 노선이 없음.");
 			return;
