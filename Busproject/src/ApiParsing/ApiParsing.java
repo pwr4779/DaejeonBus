@@ -104,7 +104,13 @@ public class ApiParsing {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					extimeInfoList.add(new ExtimeInfo(getTagValue("EXTIME_MIN", eElement).trim(),getTagValue("ROUTE_NO", eElement).trim(),getTagValue("ROUTE_TP", eElement).trim(),getTagValue("LAST_STOP_ID", eElement).trim(),getTagValue("STATUS_POS", eElement).trim()));
+					extimeInfoList.add(new ExtimeInfo(getTagValue("EXTIME_MIN", eElement).trim(),
+							getTagValue("ROUTE_NO", eElement).trim(),
+							getTagValue("ROUTE_TP", eElement).trim(),
+							getTagValue("LAST_STOP_ID", eElement).trim(),
+							getTagValue("STATUS_POS", eElement).trim(),
+							getTagValue("DESTINATION", eElement).trim(),
+							getTagValue("MSG_TP", eElement).trim()));
 				} // for end
 			} // if end
 		} catch (ParserConfigurationException e) {

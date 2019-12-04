@@ -12,10 +12,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="ParentPane" prefHeight="538.0" prefWidth="800.0" style="" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.RealtimeArrivalInfo">
+<AnchorPane id="ParentPane" prefHeight="538.0" prefWidth="1050.0" style="" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.RealtimeArrivalInfo">
 	<!-- TODO Add Nodes -->
 	<children>
-		<Pane layoutX="198.0" prefHeight="552.0" prefWidth="969.0">
+		<Pane layoutX="198.0" prefHeight="552.0" prefWidth="1050.0">
 			<children>
 				<GoogleMapView fx:id="mapView" layoutX="14.0"
 					layoutY="100.0" prefWidth="487" prefHeight="430" AnchorPane.bottomAnchor="0.0"
@@ -24,9 +24,8 @@
 				<TextField fx:id="BusStationtxtField" layoutX="14.0" layoutY="50.0" prefHeight="29.0" prefWidth="431.0" />
 				<Button fx:id="BusStationsearchBtn" layoutX="460.0" layoutY="50.0" mnemonicParsing="false" text="검색" />
 				<Label layoutX="14.0" layoutY="24.0" prefHeight="18.962890625" prefWidth="159.9998779296875" text="BusStation" textFill="WHITE" />
-            <ListView fx:id="searchlist" layoutX="511.0" layoutY="363.0" prefHeight="167.0" prefWidth="431.0" onMouseClicked="#handleMouseClick"/>
-            <ListView fx:id="ExtimeTable" layoutX="511.0" layoutY="100.0" prefHeight="255.0" prefWidth="431.0">
-            </ListView>
+            <ListView fx:id="searchlist" layoutX="520.0" layoutY="363.0" prefHeight="167.0" prefWidth="500.0" onMouseClicked="#handleMouseClick"/>
+            <ListView fx:id="ExtimeTable" layoutX="520.0" layoutY="100.0" prefHeight="255.0" prefWidth="500.0"/>
 			</children>
 		</Pane>
 		<AnchorPane id="Menupane" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="198.0">

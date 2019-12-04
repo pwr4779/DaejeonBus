@@ -103,30 +103,58 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 	}
 	
 	private void BusStationArrivalPrint(String BusStationID) {
-		ExtimeTable.setItems(FXCollections.observableArrayList());;
+		ExtimeTable.setItems(FXCollections.observableArrayList());
 		ExtimeList=mApiParsing.extimeInfoParsing(BusStationID);
 		Iterator<ExtimeInfo> Iterator = ExtimeList.iterator();
 		String result;
 		while (Iterator.hasNext()) {
 			ExtimeInfo element = (ExtimeInfo)Iterator.next();
+			if(element.getROUTE_TP() == null)
+				break;
 			switch (element.getROUTE_TP()) {
 			case "1":
-				result = String.format("%-10s%-20s%-5s%4s","급행"+element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
-				ExtimeTable.getItems().add(result);
+				result = "급행"+element.getROUTE_NO();
+				
 				break;
 			case "5":
-				result = String.format("%-10s%-20s%-5s%4s","마을"+element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
-				ExtimeTable.getItems().add(result);
+				result = "마을"+element.getROUTE_NO();
+				
 				break;
 			case "6":
-				result = String.format("%-10s%-20s%-5s%4s","첨단"+element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
-				ExtimeTable.getItems().add(result);
+				result = "첨단"+element.getROUTE_NO();
+				
 				break;
 			default:
-				result = String.format("%-10s%-20s%-5s%4s",element.getROUTE_NO(),"잔여정류장수"+"("+element.getSTATUS_POS()+")","최근통과정류장 -"+busStationTable.get(element.getLAST_STOP_ID()).getStationName(),element.getEXTIME_MIN()+"분");
-				ExtimeTable.getItems().add(result);
+				result = element.getROUTE_NO();
 				break;
 			}
+			if(element.getDESTINATION()!=null) {
+				result= result+" [종착지-"+element.getDESTINATION()+"]";
+			}
+			
+			if(element.getSTATUS_POS()!= null) {
+				result= result+" [잔여정류장(#"+element.getSTATUS_POS()+")]";
+			}
+			if(element.getEXTIME_MIN()!= null) {
+				result= result+" *예상시간*-"+element.getEXTIME_MIN();
+			}
+			if(element.getMSG_TP()!=null) {
+				switch (element.getROUTE_TP()) {
+				case "1":
+					result = result+"도착";
+				case "2":
+					result = result+"분 후 도착";
+					break;
+				case "3":
+					result = result+"진입중";
+				case "7":
+					result = result+"차고운행대기중";	
+					break;
+				default:
+					break;
+				}
+			}
+			ExtimeTable.getItems().add(result);
 		}
 	}
 	
@@ -142,7 +170,7 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 		double longtitude = Double.parseDouble(Station.getLongitude());
 		options.center(new LatLong(latitude, longtitude)).mapType(MapTypeIdEnum.ROADMAP).overviewMapControl(false)
 				.panControl(false).rotateControl(false).scaleControl(false).streetViewControl(false).zoomControl(false)
-				.zoom(12);
+				.zoom(17);
 		map = mapView.createMap(options);
 		stationMarking();
 
