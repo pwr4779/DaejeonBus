@@ -107,7 +107,6 @@ public class ApiParsing {
 					extimeInfoList.add(new ExtimeInfo(getTagValue("EXTIME_MIN", eElement).trim(),
 							getTagValue("ROUTE_NO", eElement).trim(),
 							getTagValue("ROUTE_TP", eElement).trim(),
-							getTagValue("LAST_STOP_ID", eElement).trim(),
 							getTagValue("STATUS_POS", eElement).trim(),
 							getTagValue("DESTINATION", eElement).trim(),
 							getTagValue("MSG_TP", eElement).trim()));

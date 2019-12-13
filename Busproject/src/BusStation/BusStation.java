@@ -1,8 +1,5 @@
 package BusStation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BusStation {
 	String StationName; 
 	String BUS_NODE_ID; 

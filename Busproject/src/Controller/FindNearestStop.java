@@ -2,18 +2,16 @@ package Controller;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
+
 
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
-import com.lynden.gmapsfx.javascript.object.DirectionsPane;
+
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
 import com.lynden.gmapsfx.javascript.object.InfoWindow;
 import com.lynden.gmapsfx.javascript.object.InfoWindowOptions;
@@ -22,13 +20,6 @@ import com.lynden.gmapsfx.javascript.object.MapOptions;
 import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
-import com.lynden.gmapsfx.service.directions.DirectionStatus;
-import com.lynden.gmapsfx.service.directions.DirectionsRenderer;
-import com.lynden.gmapsfx.service.directions.DirectionsRequest;
-import com.lynden.gmapsfx.service.directions.DirectionsResult;
-import com.lynden.gmapsfx.service.directions.DirectionsService;
-import com.lynden.gmapsfx.service.directions.DirectionsServiceCallback;
-import com.lynden.gmapsfx.service.directions.TravelModes;
 
 import BusStation.BusStation;
 import BusStation.BusStationTable;
@@ -98,12 +89,44 @@ public class FindNearestStop implements Initializable, MapComponentInitializedLi
 		}
 	}
 	
+	private void handleBtnRouteSearch(ActionEvent event) {
+		try{
+		    Parent RouteSearch = FXMLLoader.load(getClass().getResource("..\\UI/RouteLocationGUI.fxml"));
+
+		    Scene scene = new Scene(RouteSearch);
+		    scene.getStylesheets().add(getClass().getResource("..\\UI/application.css").toExternalForm());
+		    Stage primaryStage = (Stage)RouteButton.getScene().getWindow(); 
+		    primaryStage.setScene(scene);
+		    
+		 } catch(Exception e){
+
+		       e.printStackTrace();
+
+		}
+	}
 	
+	private void handleBtnBusSearch(ActionEvent event) {
+		try{
+		    Parent RouteSearch = FXMLLoader.load(getClass().getResource("..\\UI/BusStationArrivalGUI.fxml"));
+
+		    Scene scene = new Scene(RouteSearch);
+		    scene.getStylesheets().add(getClass().getResource("..\\UI/application.css").toExternalForm());
+		    Stage primaryStage = (Stage)BusStationButton.getScene().getWindow(); 
+		    primaryStage.setScene(scene);
+		    
+		 } catch(Exception e){
+
+		       e.printStackTrace();
+
+		}
+	}
 	
 
     public void initialize(URL url, ResourceBundle rb) {
     	
     	HomeButton.setOnAction(e->handleBtnHome(e));
+    	RouteButton.setOnAction(e->handleBtnRouteSearch(e));
+		BusStationButton.setOnAction(e->handleBtnBusSearch(e));
         mapView.addMapInializedListener(this);
     }
 	

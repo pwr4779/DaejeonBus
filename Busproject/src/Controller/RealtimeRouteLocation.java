@@ -67,6 +67,9 @@ public class RealtimeRouteLocation implements Initializable  {
 	private Button RoutesearchBtn;
 	
 	@FXML
+	private Button SurroundStationButton;
+	
+	@FXML
 	private Button uptypeBtn;
 	
 	@FXML
@@ -84,6 +87,7 @@ public class RealtimeRouteLocation implements Initializable  {
 		HomeButton.setOnAction(e->handleBtnHome(e));
 		BusStationButton.setOnAction(e->handleBtnBusStation(e));
 		RoutesearchBtn.setOnAction(e->handleRoutesearchBtn(e));
+		SurroundStationButton.setOnAction(e->handleBtnSurroundSearch(e));
 		uptypeBtn.setOnAction(e->handleuduptypeBtn(e));
 		downtypeBtn.setOnAction(e->handleuddowntypeBtn(e));
 	}
@@ -100,7 +104,6 @@ public class RealtimeRouteLocation implements Initializable  {
 
 	private void handleRoutesearchBtn(ActionEvent event) {
 		// TODO Auto-generated method stub
-		errormsg.clear();
 		uRouteName =  RoutetxtField.getText().trim();
 		RealtimeRouteLocationPrint(uRouteName,ud_type);
 	}
@@ -126,6 +129,23 @@ public class RealtimeRouteLocation implements Initializable  {
 		    scene.getStylesheets().add(getClass().getResource("..\\UI/application.css").toExternalForm());
 		    Stage primaryStage = (Stage)BusStationButton.getScene().getWindow();
 		    primaryStage.setScene(scene);	    
+		 } catch(Exception e){
+
+		       e.printStackTrace();
+
+		}
+	}
+	
+
+	private void handleBtnSurroundSearch(ActionEvent event) {
+		try{
+		    Parent RouteSearch = FXMLLoader.load(getClass().getResource("..\\UI/SurroundStationGUI.fxml"));
+
+		    Scene scene = new Scene(RouteSearch);
+		    scene.getStylesheets().add(getClass().getResource("..\\UI/application.css").toExternalForm());
+		    Stage primaryStage = (Stage)RouteButton.getScene().getWindow(); 
+		    primaryStage.setScene(scene);
+		    
 		 } catch(Exception e){
 
 		       e.printStackTrace();
@@ -193,15 +213,7 @@ public class RealtimeRouteLocation implements Initializable  {
 		searchlist.setItems(FXCollections.observableArrayList());
 		List<String>  BusstationList = routevalue.getBusstationList();
 		List<String> searchdirectionList = new ArrayList<String>();
-		int lastStopIndex = BusstationList.indexOf(routevalue.getLaststop());
-		FileInputStream inputstream = null;
-		try {
-			inputstream = new FileInputStream("busIcon.jpg");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		Image image = new Image(inputstream);
+		
 		if(type.equals("1")) {
 		     String turnstop =routevalue.getTurnstop();
 			 for(int i =BusstationList.indexOf(turnstop); i<BusstationList.size(); i++) {

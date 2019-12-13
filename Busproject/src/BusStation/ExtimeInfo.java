@@ -1,21 +1,18 @@
 package BusStation;
 
-import javafx.beans.property.StringProperty;
 
 public class ExtimeInfo {
 	private String EXTIME_MIN;
 	private String ROUTE_NO;
-	private String LAST_STOP_ID;
 	private String ROUTE_TP;
 	private String STATUS_POS;
 	private String DESTINATION;
 	private String MSG_TP;
 	
-	public ExtimeInfo(String EXTIME_MIN,String ROUTE_NO,String ROUTE_TP,String LAST_STOP_ID,String STATUS_POS, String DESTINATION, String MSG_TP) {
+	public ExtimeInfo(String EXTIME_MIN,String ROUTE_NO,String ROUTE_TP,String STATUS_POS, String DESTINATION, String MSG_TP) {
 		this.EXTIME_MIN = EXTIME_MIN;
 		this.ROUTE_NO = ROUTE_NO;
 		this.ROUTE_TP = ROUTE_TP;
-		this.LAST_STOP_ID = LAST_STOP_ID;
 		this.STATUS_POS = STATUS_POS;
 		this.DESTINATION =DESTINATION;
 		this.MSG_TP =MSG_TP;
@@ -57,13 +54,7 @@ public class ExtimeInfo {
 	public void setROUTE_NO(String rOUTE_NO) {
 		this.ROUTE_NO = rOUTE_NO;
 	}
-	
-	public String getLAST_STOP_ID() {
-		return this.LAST_STOP_ID;
-	}
-	public void setLAST_STOP_ID(String lAST_STOP_ID) {
-		this.LAST_STOP_ID = lAST_STOP_ID;
-	}
+
 	public String getSTATUS_POS() {
 		return this.STATUS_POS;
 	}

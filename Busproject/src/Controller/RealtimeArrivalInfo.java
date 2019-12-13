@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.lynden.gmapsfx.GoogleMapView;
@@ -33,7 +34,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -46,7 +50,7 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 	private String StationName;
 	private List<BusStation> Stationlist = new ArrayList<BusStation>();
 	private List<ExtimeInfo> ExtimeList = new ArrayList<ExtimeInfo>();
-	private String StationNumber;
+	private String targetStation;
     BusStationTable mBusStationTable = BusStationTable.getInstance();
     Map<String, BusStation> busStationTable = mBusStationTable.getBusStationTable();
     ApiParsing mApiParsing = ApiParsing.getInstance();
@@ -90,8 +94,6 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 	
 	private GoogleMap map;
 	
-	
-	
 	@FXML
 	public void handleMouseClick(MouseEvent event) {
 		  String selectlist = searchlist.getSelectionModel().getSelectedItem();
@@ -102,58 +104,97 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 		 
 	}
 	
+	public void handleMouseClickEx(MouseEvent event) {
+		  String ext = ExtimeTable.getSelectionModel().getSelectedItem();
+		  if(ext == null) {
+
+			System.out.println(
+					"List Clicked! but any Item I can't See sir? Plz reselct if you want to setting alarm those route");
+			return;
+		}
+		String[] extArr = ext.split(" ");
+		String target = null;
+		String route = null;
+		String routeGoing = null;
+		target = extArr[7].replaceAll("분", "");
+		route = extArr[0];
+		routeGoing = extArr[1] + extArr[2];
+		try {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Setting Alarm");
+			alert.setHeaderText("You want to Setting Alarm?");
+			alert.setContentText(route + " " + routeGoing + " On ");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				int min = Integer.valueOf(target);
+				min = min - 3;
+				if (min < 0) {
+					min = 0;
+				}
+				AlarmSet al = new AlarmSet(min, targetStation, route);
+				al.alarmSettingAndNotification();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void BusStationArrivalPrint(String BusStationID) {
 		ExtimeTable.setItems(FXCollections.observableArrayList());
 		ExtimeList=mApiParsing.extimeInfoParsing(BusStationID);
 		Iterator<ExtimeInfo> Iterator = ExtimeList.iterator();
-		String result;
+		String result = null;
+		targetStation = busStationTable.get(BusStationID).getStationName();
 		while (Iterator.hasNext()) {
 			ExtimeInfo element = (ExtimeInfo)Iterator.next();
-			if(element.getROUTE_TP() == null)
-				break;
-			switch (element.getROUTE_TP()) {
-			case "1":
-				result = "급행"+element.getROUTE_NO();
-				
-				break;
-			case "5":
-				result = "마을"+element.getROUTE_NO();
-				
-				break;
-			case "6":
-				result = "첨단"+element.getROUTE_NO();
-				
-				break;
-			default:
-				result = element.getROUTE_NO();
-				break;
+			if(element.getROUTE_TP() != null) {
+				switch (element.getROUTE_TP()) {
+				case "1":
+					result = "급행"+element.getROUTE_NO();
+					break;
+				case "5":
+					result = "마을"+element.getROUTE_NO();
+					
+					break;
+				case "6":
+					result = "첨단"+element.getROUTE_NO();	
+					break;
+				default:
+					result = element.getROUTE_NO();
+					break;
+				}
 			}
 			if(element.getDESTINATION()!=null) {
-				result= result+" [종착지-"+element.getDESTINATION()+"]";
+				result= result+" ["+element.getDESTINATION()+" 방향]";
 			}
 			
 			if(element.getSTATUS_POS()!= null) {
-				result= result+" [잔여정류장(#"+element.getSTATUS_POS()+")]";
+				result= result+" [잔여정류장(# "+element.getSTATUS_POS()+" )]";
 			}
 			if(element.getEXTIME_MIN()!= null) {
-				result= result+" *예상시간*-"+element.getEXTIME_MIN();
+				result= result+" *예상시간*- "+element.getEXTIME_MIN();
 			}
 			if(element.getMSG_TP()!=null) {
-				switch (element.getROUTE_TP()) {
+				switch (element.getMSG_TP()) {
 				case "1":
 					result = result+"도착";
+					break;
 				case "2":
 					result = result+"분 후 도착";
 					break;
 				case "3":
 					result = result+"진입중";
+					break;
 				case "7":
 					result = result+"차고운행대기중";	
 					break;
 				default:
+					result = result+"분";	
 					break;
 				}
-			}
+			} 	
 			ExtimeTable.getItems().add(result);
 		}
 	}
@@ -163,16 +204,19 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 		// TODO Auto-generated method stub
 		searchlist.setItems(FXCollections.observableArrayList());
 		StationName = BusStationtxtField.getText().trim();
+		Stationlist.clear();
 		findStationLocation(StationName);
-		BusStation Station = Stationlist.get(0);
-		MapOptions options = new MapOptions();
-		double latitude = Double.parseDouble(Station.getLatitude());
-		double longtitude = Double.parseDouble(Station.getLongitude());
-		options.center(new LatLong(latitude, longtitude)).mapType(MapTypeIdEnum.ROADMAP).overviewMapControl(false)
-				.panControl(false).rotateControl(false).scaleControl(false).streetViewControl(false).zoomControl(false)
-				.zoom(17);
-		map = mapView.createMap(options);
-		stationMarking();
+		if(Stationlist.size()>0) {
+			BusStation Station = Stationlist.get(0);
+			MapOptions options = new MapOptions();
+			double latitude = Double.parseDouble(Station.getLatitude());
+			double longtitude = Double.parseDouble(Station.getLongitude());
+			options.center(new LatLong(latitude, longtitude)).mapType(MapTypeIdEnum.ROADMAP).overviewMapControl(false)
+					.panControl(false).rotateControl(false).scaleControl(false).streetViewControl(false).zoomControl(false)
+					.zoom(14);
+			map = mapView.createMap(options);
+			stationMarking();
+		}
 
 	}
 	
@@ -277,14 +321,5 @@ public class RealtimeArrivalInfo implements  Initializable, MapComponentInitiali
 
 		}
 	}
-
-	public void requestTimeInfoUseAPI(Date date, String stationID, String routeID) {
-		// TODO Auto-generated method stub
-		AlarmSet alarm = new AlarmSet(date, stationID, routeID);
-	}
-
-
-
-
 	
 }
