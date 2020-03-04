@@ -2,7 +2,7 @@
 ## This Project Provides Information of Bus in Daejeon
 
 ## Setting before Start - Input API key
-![Input ApiKey](./img/Input ApiKey.PNG)
+![InputApiKey](./img/InputApiKey.PNG)
 
 # DeajeonBus Function List
 
