@@ -2,17 +2,17 @@
 ## This Project Provides Information of Bus in Daejeon
 
 ## Setting before Start - Input API key
-<img src="/img/Input ApiKey.png" width="450px" height="300px" alt="RubberDuck"></img><br/>
+![Input ApiKey](./img/Input ApiKey.PNG)
 
 # DeajeonBus Function List
 
 ## Route Info Search
-![Route](./img/Route.png)
+![Route](./img/Route.PNG)
 
 ## BusStation Info Search
-![BusStation](./img/BusStation.png)
+![BusStation](./img/BusStation.PNG)
 
 ## Alarm
 
 ## Surround BusStation Search
-![SurroundStation](./img/SurroundStation.png)
+![SurroundStation](./img/SurroundStation.PNG)
