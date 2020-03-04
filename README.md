@@ -7,12 +7,12 @@
 # DeajeonBus Function List
 
 ## Route Info Search
-<img src="./img/Route.png" width="450px" height="300px" alt="RubberDuck"></img><br/>
+![Route](./img/Route.png)
 
 ## BusStation Info Search
-<img src="./img/BusStation.png" width="450px" height="300px" alt="RubberDuck"></img><br/>
+![BusStation](./img/BusStation.png)
 
 ## Alarm
 
 ## Surround BusStation Search
-<img src="./img/SurroundStation.png" width="450px" height="300px" alt="RubberDuck"></img><br/>
+![SurroundStation](./img/SurroundStation.png)
