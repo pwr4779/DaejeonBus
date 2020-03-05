@@ -13,6 +13,11 @@
 ![BusStation](./img/BusStation.PNG)
 
 ## Alarm
+###Alarm setting
+![Alarm_1](./img/Alarm_1.PNG)
+![Alarm_2](./img/Alarm_2.PNG)
+
+![BusStation](./img/BusStation.PNG)
 
 ## Surround BusStation Search
 ![SurroundStation](./img/SurroundStation.PNG)
